@@ -6,9 +6,71 @@ import 'package:project_mom/routes/History.dart';
 import 'package:project_mom/routes/MenuDailyMain.dart';
 import 'package:project_mom/routes/ProteinCal.dart';
 import 'package:project_mom/routes/Menu.dart';
+import 'package:project_mom/database/im_un_database.dart';
+import 'package:project_mom/routes/backup.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const DatabaseStartup());
+}
+
+class DatabaseStartup extends StatefulWidget {
+  const DatabaseStartup({super.key});
+
+  @override
+  State<DatabaseStartup> createState() => _DatabaseStartupState();
+}
+
+class _DatabaseStartupState extends State<DatabaseStartup> {
+  late Future<void> _ready;
+
+  @override
+  void initState() {
+    super.initState();
+    _ready = _openDatabase();
+  }
+
+  Future<void> _openDatabase() async {
+    await ImUnDB(dbName: 'ImUnTransaction.db').openDatabase();
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<void>(
+    future: _ready,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState != ConnectionState.done) {
+        return const MaterialApp(
+          home: Scaffold(body: Center(child: CircularProgressIndicator())),
+        );
+      }
+      if (snapshot.hasError) {
+        return MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'ไม่สามารถเปิดข้อมูลที่เก็บในเครื่องได้ ข้อมูลเดิมยังไม่ได้ถูกลบ โปรดปลดล็อกเครื่องแล้วลองอีกครั้ง หากยังไม่สำเร็จ โปรดติดต่อผู้ดูแลแอปก่อนลบหรือติดตั้งใหม่',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => setState(() => _ready = _openDatabase()),
+                      child: const Text('ลองอีกครั้ง'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      return MyApp();
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -33,13 +95,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            tooltip: 'สำรองและกู้คืนข้อมูล',
+            icon: const Icon(Icons.backup_outlined),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const BackupPage()),
+            ),
+          ),
+        ],
         centerTitle: true,
         title: Text(
           'อิ่มอุ่น',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
         ),
       ),
       body: GridView.count(
@@ -103,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () async {
               await _controller.loadTransaction();
               Navigator.push(
@@ -118,9 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.maxFinite,
               decoration: BoxDecoration(
                 color: Color(0xFFFFFFFF),
-                border: Border.all(
-                  color: Color(0xFFdcdedc),
-                ),
+                border: Border.all(color: Color(0xFFdcdedc)),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(

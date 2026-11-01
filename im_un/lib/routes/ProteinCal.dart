@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -211,7 +210,6 @@ class _proteinCalScreenState extends State<proteinCalScreen> {
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState!.validate()) {
                         if (_bloodHemo == "ได้รับการฟอกเลือด") {
-                          print(_result);
                           setState(() {
                             _result = (double.parse(_weight!) * 1.2)
                                 .toStringAsFixed(2);
@@ -222,7 +220,6 @@ class _proteinCalScreenState extends State<proteinCalScreen> {
                           });
                         }
                         if (_bloodHemo == "ไม่ได้รับการฟอกเลือด") {
-                          print(_result);
                           setState(() {
                             _result = ((double.parse(_weight!) * 0.8))
                                 .toStringAsFixed(2);
@@ -231,7 +228,6 @@ class _proteinCalScreenState extends State<proteinCalScreen> {
                             _controller.proteinPerdate.text =
                                 _result2.toString();
                           });
-                          print(_result2);
                         }
                       }
 
@@ -243,7 +239,6 @@ class _proteinCalScreenState extends State<proteinCalScreen> {
 
                         var db = ImUnDB(dbName: "ImUnTransaction.db");
                         await db.InsertDataProtein(statement);
-                        print(db);
                     },
                   ),
                 ),

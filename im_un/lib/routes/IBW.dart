@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -281,32 +280,24 @@ class _ibwScreenState extends State<ibwScreen> {
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
                           if (_gender == "ชาย") {
-                            print("ชาย");
-                            print(_result);
                             setState(() {
                               _result = (int.parse(_height!) - 100).toString();
                             });
                           }
                           if (_gender == "หญิง") {
-                            print("หญิง");
-                            print(_result);
                             setState(() {
                               _result = (int.parse(_height!) - 105).toString();
                             });
                           }
                           if (_age == "อายุน้อยกว่า 60") {
-                            print(_result2);
                             setState(() {
                               _result2 = (int.parse(_result!) * 35).toString();
                               _controller.calPerdate.text = _result2.toString();
-                              print(_controller.calPerdate.text);
                             });
                           } else {
-                            print(_result2);
                             setState(() {
                               _result2 = (int.parse(_result!) * 30).toString();
                               _controller.calPerdate.text = _result2.toString();
-                              print(_controller.calPerdate.text);
                             });
                           }
                         }
@@ -319,7 +310,6 @@ class _ibwScreenState extends State<ibwScreen> {
 
                         var db = ImUnDB(dbName: "ImUnTransaction.db");
                         await db.InsertDataIBW(statement);
-                        print(db);
 
                         // showDialog<String>(
                         //   context: context,
