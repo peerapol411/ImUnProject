@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -248,9 +247,6 @@ class ImUnController extends GetxController {
     } else {}
     map['โปรตีนที่ต้องการเพิ่ม'] = result;
 
-    print('map');
-    print(map);
-    print(result);
   }
 
   Future<void> calculateCal() async {
@@ -265,9 +261,6 @@ class ImUnController extends GetxController {
     } else {}
     map2['แคลที่ต้องการเพิ่ม'] = result2;
 
-    print('map2222222222222');
-    print(map2);
-    print(result2);
   }
 
   //Breakfast
@@ -499,7 +492,6 @@ class ImUnController extends GetxController {
   Future<void> loadTransaction() async {
     var db = ImUnDB(dbName: "ImUnTransaction.db");
     dataTransaction = await db.loadAlldata();
-    log(dataTransaction.toString());
   }
 
   Future<void> loadTransactionBreakfast() async {
@@ -516,14 +508,12 @@ class ImUnController extends GetxController {
         : lastesCalCal =
             dataTransactionBreakfast[dataTransactionBreakfast.length - 1]['cal']
                 .toString();
-    print(lastesCalCal);
     dataTransactionBreakfast.isEmpty
         ? lastesCalPro = ''
         : lastesCalPro =
             dataTransactionBreakfast[dataTransactionBreakfast.length - 1]
                     ['protein']
                 .toString();
-    log(dataTransactionBreakfast.toString());
   }
 
   Future<void> loadTransactionLunch() async {
@@ -539,13 +529,11 @@ class ImUnController extends GetxController {
         : lastesCalCalLunch =
             dataTransactionLunch[dataTransactionLunch.length - 1]['cal']
                 .toString();
-    print(lastesCalCal);
     dataTransactionLunch.isEmpty
         ? lastesCalProLunch = ''
         : lastesCalProLunch =
             dataTransactionLunch[dataTransactionLunch.length - 1]['protein']
                 .toString();
-    log(dataTransactionLunch.toString());
   }
 
   Future<void> loadTransactionDinner() async {
@@ -561,13 +549,11 @@ class ImUnController extends GetxController {
         : lastesCalCalDinner =
             dataTransactionDinner[dataTransactionDinner.length - 1]['cal']
                 .toString();
-    print(lastesCalCal);
     dataTransactionDinner.isEmpty
         ? lastesCalProDinner = ''
         : lastesCalProDinner =
             dataTransactionDinner[dataTransactionDinner.length - 1]['protein']
                 .toString();
-    log(dataTransactionDinner.toString());
   }
 
   Future<void> loadTransactionIBW() async {
@@ -584,7 +570,6 @@ class ImUnController extends GetxController {
         ? calperdateSave = ''
         : calperdateSave =
             dataTransactionIBW[dataTransactionIBW.length - 1]['calperdate'];
-    log(dataTransactionIBW.toString());
   }
 
   Future<void> loadTransactionProtein() async {
@@ -604,6 +589,5 @@ class ImUnController extends GetxController {
         : proteinPart =
             dataTransactionProtein[dataTransactionProtein.length - 1]
                 ['proteinP'];
-    log(dataTransactionProtein.toString());
   }
 }

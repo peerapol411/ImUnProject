@@ -1,24 +1,18 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
+import 'secure_database.dart';
 
 class ImUnDB {
   String dbName;
 
-  ImUnDB({
-    required this.dbName,
-  });
+  ImUnDB({required this.dbName});
 
   Future<Database> openDatabase() async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
     String dbLocation = join(appDirectory.path, dbName);
-    //สร้าง DB
-    DatabaseFactory dbFactory = await databaseFactoryIo;
-    Database db = await dbFactory.openDatabase(dbLocation);
-    return db;
+    return secureDatabaseManager.open(dbLocation);
   }
 
   Future<int> InsertData(List transaction) async {
@@ -26,7 +20,7 @@ class ImUnDB {
     var store = intMapStoreFactory.store("transaction");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "protein": transaction[0],
       "date": transaction[1],
       "check": transaction[2],
@@ -35,7 +29,6 @@ class ImUnDB {
       "moreCal": transaction[5],
       "check2": transaction[6],
     });
-    db.close();
     return keyID;
   }
 
@@ -44,42 +37,37 @@ class ImUnDB {
     var store = intMapStoreFactory.store("calIBW");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "weight": transaction[0],
       "date": transaction[1],
       "calperdate": transaction[2],
     });
-    db.close();
     return keyID;
   }
 
-  
   Future<int> InsertDataProtein(List transaction) async {
     var db = await this.openDatabase();
     var store = intMapStoreFactory.store("calProtein");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "proteinG": transaction[0],
       "date": transaction[1],
       "proteinP": transaction[2],
     });
-    db.close();
     return keyID;
   }
-
 
   Future<int> InsertDataBreakfast(List transactionBreakfast) async {
     var db = await this.openDatabase();
     var store = intMapStoreFactory.store("breakfast");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "protein": transactionBreakfast[0],
       "cal": transactionBreakfast[1],
       "date": transactionBreakfast[2],
     });
-    db.close();
     return keyID;
   }
 
@@ -88,12 +76,11 @@ class ImUnDB {
     var store = intMapStoreFactory.store("lunch");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "protein": transactionLunch[0],
       "cal": transactionLunch[1],
       "date": transactionLunch[2],
     });
-    db.close();
     return keyID;
   }
 
@@ -102,12 +89,11 @@ class ImUnDB {
     var store = intMapStoreFactory.store("dinner");
 
     //json
-    var keyID = store.add(db, {
+    var keyID = await store.add(db, {
       "protein": transactionDinner[0],
       "cal": transactionDinner[1],
       "date": transactionDinner[2],
     });
-    db.close();
     return keyID;
   }
 

@@ -2276,7 +2276,6 @@ class _menuDailyDinnerState extends State<menuDailyDinner> {
                   ];
                   var db = ImUnDB(dbName: "ImUnTransaction.db");
                   await db.InsertDataDinner(statement);
-                  print(db);
 
                   showDialog<String>(
                     context: context,

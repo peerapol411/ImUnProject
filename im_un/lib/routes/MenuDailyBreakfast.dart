@@ -2239,7 +2239,6 @@ class _menuDailyBreakfastState extends State<menuDailyBreakfast> {
                   ];
                   var db = ImUnDB(dbName: "ImUnTransaction.db");
                   await db.InsertDataBreakfast(statement);
-                  print(db);
 
                   showDialog<String>(
                     context: context,
